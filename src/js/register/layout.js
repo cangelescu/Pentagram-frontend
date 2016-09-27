@@ -1,43 +1,26 @@
 var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
 
 var RegisterPage = React.createClass({
 	render: function(){
-		return(	
-			<div id="signup">   
-				<h1>Sign Up for Free</h1>
-				<h1>Create Account</h1>
-				
-				<div class="field-wrap">
-					<label>
-						First Name<span class="req">*</span>
-					</label>
-					<input type="text" required autocomplete="off" />
-				</div>
-        
-				<div class="field-wrap">
-					<label>
-						Last Name<span class="req">*</span>
-					</label>
-					<input type="text"required autocomplete="off"/>
-				</div>
-				
-
-				<div class="field-wrap">
-					<label>
-						Email Address<span class="req">*</span>
-					</label>
-					<input type="email"required autocomplete="off"/>
-				</div>
-          
-				<div class="field-wrap">
-					<label>
-						Set A Password<span class="req">*</span>
-					</label>
-					<input type="password"required autocomplete="off"/>
-				</div>
-          
-				<button type="submit" class="button button-block">Get Started</button>	
-			</div>
+		return(
+			<div className="login-page">
+				<form className="login">
+					<h1>Sign Up for Free</h1>
+					<input type="text" placeholder="First Name" autofocus />
+			        <input type="text" placeholder="Last Name" />
+					<input type="text" placeholder="Username" />					
+					<input type="email" placeholder="Email" />
+					<input type="password" placeholder="Password" />
+			        <button type="submit">
+			            <span className="state">Create</span>
+			        </button>
+					<div className="message">
+						Already registered? <Link to="login">Sign In</Link>
+					</div>
+				</form>
+		    </div>
 		);
 	}
 });

@@ -23039,97 +23039,62 @@ var HomePage = React.createClass({displayName: "HomePage",
 module.exports = HomePage;
 
 },{"react":198}],202:[function(require,module,exports){
-var React = require('react');
+var React = require ('react');
 var Router = require('react-router');
 var Link = Router.Link;
 
 var LoginPage = React.createClass({displayName: "LoginPage",
 	render: function(){
-		return(
-			React.createElement("div", {id: "login"}, 
-				React.createElement("h1", null, "Welcome Back!"), 
-				React.createElement("h1", null, "Log In"), 
-				
-				React.createElement("div", {class: "field-wrap"}, 
-					React.createElement("label", null, 
-						"Email Address", React.createElement("span", {class: "req"}, "*")
-					), 
-					React.createElement("input", {type: "email", required: true, autocomplete: "off"})
-				), 
-          
-				React.createElement("div", {class: "field-wrap"}, 
-					React.createElement("label", null, 
-						"Password", React.createElement("span", {class: "req"}, "*")
-					), 
-					React.createElement("input", {type: "password", required: true, autocomplete: "off"})
-				), 
-          
-				React.createElement("p", {class: "forgot"}, 
-					React.createElement("a", {href: "#"}, 
-						"Forgot Password?"
+		return( 
+			React.createElement("div", {className: "login-page"}, 
+				React.createElement("form", {className: "login"}, 
+					React.createElement("h1", null, "Welcome Back!"), 
+					React.createElement("input", {type: "text", placeholder: "Username", autofocus: true}), 
+			        React.createElement("input", {type: "password", placeholder: "Password"}), 
+			        React.createElement("button", {type: "submit"}, 
+			            React.createElement("span", {className: "state"}, "Login")
+			        ), 
+					React.createElement("div", {className: "message"}, 
+						"Not registered? ", React.createElement(Link, {to: "register"}, "Create account")
 					)
-				), 
-							
-				React.createElement("div", null, 
-					React.createElement(Link, {to: "register"}, "Create account")
-				), 
-          
-				React.createElement("button", {class: "submit"}, "Log In")
-			)
+				)
+		    )
 		);
 	}
 });
 
 module.exports = LoginPage;
-
 },{"react":198,"react-router":26}],203:[function(require,module,exports){
 var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
 
 var RegisterPage = React.createClass({displayName: "RegisterPage",
 	render: function(){
-		return(	
-			React.createElement("div", {id: "signup"}, 
-				React.createElement("h1", null, "Sign Up for Free"), 
-				React.createElement("h1", null, "Create Account"), 
-				
-				React.createElement("div", {class: "field-wrap"}, 
-					React.createElement("label", null, 
-						"First Name", React.createElement("span", {class: "req"}, "*")
-					), 
-					React.createElement("input", {type: "text", required: true, autocomplete: "off"})
-				), 
-        
-				React.createElement("div", {class: "field-wrap"}, 
-					React.createElement("label", null, 
-						"Last Name", React.createElement("span", {class: "req"}, "*")
-					), 
-					React.createElement("input", {type: "text", required: true, autocomplete: "off"})
-				), 
-				
-
-				React.createElement("div", {class: "field-wrap"}, 
-					React.createElement("label", null, 
-						"Email Address", React.createElement("span", {class: "req"}, "*")
-					), 
-					React.createElement("input", {type: "email", required: true, autocomplete: "off"})
-				), 
-          
-				React.createElement("div", {class: "field-wrap"}, 
-					React.createElement("label", null, 
-						"Set A Password", React.createElement("span", {class: "req"}, "*")
-					), 
-					React.createElement("input", {type: "password", required: true, autocomplete: "off"})
-				), 
-          
-				React.createElement("button", {type: "submit", class: "button button-block"}, "Get Started")	
-			)
+		return(
+			React.createElement("div", {className: "login-page"}, 
+				React.createElement("form", {className: "login"}, 
+					React.createElement("h1", null, "Sign Up for Free"), 
+					React.createElement("input", {type: "text", placeholder: "First Name", autofocus: true}), 
+			        React.createElement("input", {type: "text", placeholder: "Last Name"}), 
+					React.createElement("input", {type: "text", placeholder: "Username"}), 					
+					React.createElement("input", {type: "email", placeholder: "Email"}), 
+					React.createElement("input", {type: "password", placeholder: "Password"}), 
+			        React.createElement("button", {type: "submit"}, 
+			            React.createElement("span", {className: "state"}, "Create")
+			        ), 
+					React.createElement("div", {className: "message"}, 
+						"Already registered? ", React.createElement(Link, {to: "login"}, "Sign In")
+					)
+				)
+		    )
 		);
 	}
 });
 
 module.exports = RegisterPage;
 
-},{"react":198}],204:[function(require,module,exports){
+},{"react":198,"react-router":26}],204:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Route = Router.Route;

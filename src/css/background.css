@@ -1,4 +1,8 @@
-body {
-	background-image: url("http://www.spyderonlines.com/images/wallpapers/city-night-hd-wallpaper/city-night-hd-wallpaper-17.jpg");
-	background-size:cover;
+html body {
+  font-family: "Open Sans", sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  height: 100vh;
+  background: url("http://www.spyderonlines.com/images/wallpapers/city-night-hd-wallpaper/city-night-hd-wallpaper-17.jpg") 50% fixed;
+  background-size: cover;
 }
