@@ -9,7 +9,7 @@ var NotFoundPage = React.createClass({
 				<h1>Oups!! Page not found</h1>
 				<Link to="login">Go to login page</Link>
 			</div>
-			);
+		);
 	}
 });
 

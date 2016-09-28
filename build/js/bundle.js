@@ -22989,13 +22989,53 @@ var NotFoundPage = React.createClass({displayName: "NotFoundPage",
 				React.createElement("h1", null, "Oups!! Page not found"), 
 				React.createElement(Link, {to: "login"}, "Go to login page")
 			)
-			);
+		);
 	}
 });
 
 module.exports = NotFoundPage;
 
 },{"react":198,"react-router":26}],200:[function(require,module,exports){
+var baseUrl = "http://localhost:8080";
+
+var prepareUrl = function(url){
+	if(!url.trim().startsWith("http")){
+		return baseUrl + url;
+	}
+	
+	return url;
+}
+
+var ajaxSupport = {
+	get: function(options){
+		options.type = "GET";
+		options.contentType="application/json";
+		options.url = prepareUrl(options.url);
+		return $.ajax(options);
+	}
+	,post: function(options){
+		options.type = "POST";
+		options.contentType="application/json";
+		options.url = prepareUrl(options.url);
+		return $.ajax(options);
+	}
+	,put: function(options){
+		options.type = "PUT";
+		options.contentType="application/json";
+		options.url = prepareUrl(options.url);
+		return $.ajax(options);
+	}
+	,delete: function(options){
+		options.type = "DELETE";
+		options.contentType="application/json";
+		options.url = prepareUrl(options.url);
+		return $.ajax(options);
+	}
+}
+
+module.exports = ajaxSupport;
+
+},{}],201:[function(require,module,exports){
 var React = require('react');
 var RouteHandler = require('react-router').RouteHandler;
 
@@ -23011,7 +23051,7 @@ var AppBaseView = React.createClass({displayName: "AppBaseView",
 
 module.exports = AppBaseView;
 
-},{"react":198,"react-router":26}],201:[function(require,module,exports){
+},{"react":198,"react-router":26}],202:[function(require,module,exports){
 var React = require('react');
 
 var HomePage = React.createClass({displayName: "HomePage",
@@ -23038,20 +23078,71 @@ var HomePage = React.createClass({displayName: "HomePage",
 
 module.exports = HomePage;
 
-},{"react":198}],202:[function(require,module,exports){
+},{"react":198}],203:[function(require,module,exports){
 var React = require ('react');
 var Router = require('react-router');
 var Link = Router.Link;
+var AjaxSupport = require('../ajax/ajax');
 
 var LoginPage = React.createClass({displayName: "LoginPage",
-	render: function(){
+	
+	isValidInputValue: function(inputValue){
+			if (!inputValue || inputValue.trim().length === 0){
+				return false;
+			}
+		return true;
+	}
+	
+	,usernameChangeHandler : function(event){
+		var usernameValue = event.target.value;
+			if (!this.isValidInputValue(usernameValue)){
+				usernameValue = null;
+			}
+		this.setState({username:usernameValue});
+	}
+		
+	,passwordChangeHandler : function(event){
+		var passwordValue = event.target.value;
+			if (!this.isValidInputValue(passwordValue)){
+				passwordValue = null;
+			}
+		this.setState({password:passwordValue});
+	}
+	
+	,formSubmitHandler: function(event){
+		event.preventDefault();
+		console.log(this.state);
+			
+		if(this.isValidStateForSubmit()){
+			AjaxSupport.post({
+				url:'/login-user'
+				, data:this.state
+				, succes: function(){
+					console.log("request succes");
+				}
+				, error :function(){
+					console.log("my request failed");
+				}
+			});
+				
+			console.log("Form ready for submit");
+		}
+		else {
+			console.log("there bla bla");
+		}
+	}
+	,isValidStateForSubmit: function(){
+		return this.state.username && this.state.password;
+	}
+	
+	,render: function(){
 		return( 
 			React.createElement("div", {className: "login-page"}, 
 				React.createElement("form", {className: "login"}, 
 					React.createElement("h1", null, "Welcome Back!"), 
-					React.createElement("input", {type: "text", placeholder: "Username", autofocus: true}), 
-			        React.createElement("input", {type: "password", placeholder: "Password"}), 
-			        React.createElement("button", {type: "submit"}, 
+					React.createElement("input", {type: "text", name: "username", placeholder: "Username", onChange: this.usernameChangeHandler, 		autofocus: true}), 
+			        React.createElement("input", {type: "password", name: "password", placeholder: "Password", onChange: this.passwordChangeHandler}), 
+			        React.createElement("button", {type: "submit", onClick: this.formSubmitHandler}, 
 			            React.createElement("span", {className: "state"}, "Login")
 			        ), 
 					React.createElement("div", {className: "message"}, 
@@ -23064,23 +23155,121 @@ var LoginPage = React.createClass({displayName: "LoginPage",
 });
 
 module.exports = LoginPage;
-},{"react":198,"react-router":26}],203:[function(require,module,exports){
+},{"../ajax/ajax":200,"react":198,"react-router":26}],204:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
+var AjaxSupport = require('../ajax/ajax');
 
 var RegisterPage = React.createClass({displayName: "RegisterPage",
-	render: function(){
+	
+	getInitialState: function(){
+		return {
+			firstName:null,
+			lastName:null,
+			username:null,
+			email:null,
+			password:null,
+			rpassword:null
+		}
+	}
+		,isValidInputValue: function(inputValue){
+			if (!inputValue || inputValue.trim().length === 0){
+				return false;
+			}
+			return true;
+		}
+		
+		,firstNameChangeHandler : function(event){
+			var firstNameValue = event.target.value;
+			if (!this.isValidInputValue(firstNameValue)){
+				firstNameValue = null;
+			}
+			this.setState({firstName:firstNameValue});
+		}
+		
+		,lastNameChangeHandler : function(event){
+			var lastNameValue = event.target.value;
+			if (!this.isValidInputValue(lastNameValue)){
+				lastNameValue = null;
+			}
+			this.setState({lastName:lastNameValue});
+		}
+		
+		,userNameChangeHandler : function(event){
+			var userNameValue = event.target.value;
+			if (!this.isValidInputValue(userNameValue)){
+				userNameValue = null;
+			}
+			this.setState({username:userNameValue});
+		}
+		
+		,emailChangeHandler : function(event){
+			var emailValue = event.target.value;
+			if (!this.isValidInputValue(emailValue)){
+				emailValue = null;
+			}
+			this.setState({email:emailValue});
+		}
+		
+		,passwordChangeHandler : function(event){
+			var passwordValue = event.target.value;
+			if (!this.isValidInputValue(passwordValue)){
+				passwordValue = null;
+			}
+			this.setState({password:passwordValue});
+		}
+		
+		,password2ChangeHandler : function(event){
+			var password2Value = event.target.value;
+			if (!this.isValidInputValue(password2Value)){
+				password2Value = null;
+			}
+			this.setState({rpassword:password2Value});
+		}
+		
+		,formSubmitHandler: function(event){
+			event.preventDefault();
+			console.log(this.state);
+			
+			if(this.isValidStateForSubmit()){
+				AjaxSupport.post({
+					url:'/register-user'
+					, data:this.state
+					, succes: function(){
+						console.log("request succes");
+					}
+					, error :function(){
+						console.log("my request failed");
+					}
+				});
+				
+				console.log("Form ready for submit");
+			}
+			else {
+				console.log("there bla bla");
+			}
+		}
+		
+		,isValidStateForSubmit: function(){
+			return this.state.firstName && this.state.lastName && this.state.email && this.state.username &&
+				this.state.password && this.state.rpassword && (this.state.password === this.state.rpassword);
+		}
+	,render: function(){
 		return(
 			React.createElement("div", {className: "login-page"}, 
 				React.createElement("form", {className: "login"}, 
 					React.createElement("h1", null, "Sign Up for Free"), 
-					React.createElement("input", {type: "text", placeholder: "First Name", autofocus: true}), 
-			        React.createElement("input", {type: "text", placeholder: "Last Name"}), 
-					React.createElement("input", {type: "text", placeholder: "Username"}), 					
-					React.createElement("input", {type: "email", placeholder: "Email"}), 
-					React.createElement("input", {type: "password", placeholder: "Password"}), 
-			        React.createElement("button", {type: "submit"}, 
+					React.createElement("input", {type: "text", name: "firstName", placeholder: "First Name", onChange: this.firstNameChangeHandler, 	autofocus: true}), 
+			        React.createElement("input", {type: "text", name: "lastName", placeholder: "Last Name", onChange: this.lastNameChangeHandler}), 
+					React.createElement("input", {type: "text", name: "username", placeholder: "Username", onChange: this.userNameChangeHandler}), 		
+					React.createElement("input", {type: "email", name: "email", placeholder: "Email", onChange: this.emailChangeHandler}), 
+					React.createElement("input", {type: "password", name: "password", placeholder: "Password", 
+						onChange: this.passwordChangeHandler}), 
+					React.createElement("input", {type: "password", name: "rpassword", placeholder: "Re-Password", 
+						onChange: this.password2ChangeHandler}), 
+					
+			        React.createElement("button", {type: "submit", onClick: this.formSubmitHandler}, 
 			            React.createElement("span", {className: "state"}, "Create")
 			        ), 
 					React.createElement("div", {className: "message"}, 
@@ -23094,7 +23283,7 @@ var RegisterPage = React.createClass({displayName: "RegisterPage",
 
 module.exports = RegisterPage;
 
-},{"react":198,"react-router":26}],204:[function(require,module,exports){
+},{"../ajax/ajax":200,"react":198,"react-router":26}],205:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Route = Router.Route;
@@ -23117,7 +23306,7 @@ var routes =(
 );
 module.exports = routes;
 
-},{"./404/layout":199,"./app/layout":200,"./home/layout":201,"./login/layout":202,"./register/layout.js":203,"react":198,"react-router":26}],205:[function(require,module,exports){
+},{"./404/layout":199,"./app/layout":201,"./home/layout":202,"./login/layout":203,"./register/layout.js":204,"react":198,"react-router":26}],206:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var routes = require('./js/routes');
@@ -23126,4 +23315,4 @@ Router.run(routes, function(Handler){
 	React.render(React.createElement(Handler, null) , document.getElementById('app'));
 });
 
-},{"./js/routes":204,"react":198,"react-router":26}]},{},[205]);
+},{"./js/routes":205,"react":198,"react-router":26}]},{},[206]);
