@@ -92,6 +92,51 @@
   color: #EF3B3A;
 }
 
+@import "compass/css3";
+
+.container2 {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.picture {
+  background: tomato;
+  padding: 5px;
+  width: 500px;
+  height: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 150px;
+  color: white;
+  font-weight: bold;
+  font-size: 3em;
+  text-align: center;
+  position: relative;
+}
+.home{
+  margin: 0 0 15px;
+  padding: 0;
+  font-size: 36px;
+  font-weight: 300;
+  color: #1a1a1a;
+	
+}
+h1{
+	color:green;
+	text-align:center;
+}
+
+
 body {
   background: #76b852; 
   background: -webkit-linear-gradient(right, #76b852, #8DC26F);

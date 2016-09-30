@@ -1,23 +1,54 @@
 var React = require('react');
+var Storage = require('../common/appStorageHandler');
+var Joke = require('./token');
+
+var BaseJokeApiPath = 'http://api.icndb.com/jokes/random/'
 
 var HomePage = React.createClass({
-	render: function(){
-		return(
-			<table className="table">
-					<thead>
-					<tr>	
-						<th>#</th>
-						<th>First Name</th>
-						<th>Last Name</th>
-						<th>Username</th>
-					</tr>
-					</thead>
-					<tbody id="user-data-container">
-					<tr>
-                        <td colspan="3">Loading data ... </td>
-                    </tr>
-					</tbody>
-            </table>
+	getInitialState: function(){
+		// initialise data with empty object
+		var appData = Storage.getFromStorage();
+
+		return {
+			name: appData.name
+			, noOfJokes: appData.noOfJokes
+			, jokes: []
+		}
+
+	}
+	, componentDidMount: function() {
+		if (this.state.noOfJokes) {
+			var self = this;
+			$.ajax({
+				url: BaseJokeApiPath + this.state.noOfJokes
+				, headers: {
+					Authorization:this.state.noOfJokes
+				}
+				, success: function(data){
+					console.log(data);
+					self.setState({jokes:data.value})
+				}
+				, error: function(data) {
+					console.log("there was an error while fetching jokes :(");
+				}
+			})
+		}
+		
+	}
+	, render: function(){
+		return (
+			<div>
+				<h1>Pentagram</h1>
+				<h1>Wellcome {this.state.name}</h1>
+
+				<i> You requested {this.state.noOfJokes} jokes </i>
+
+				<ul>
+						{this.state.jokes.map(function(item){
+							return <Joke key={item.id} id={item.id} content={item.joke} />
+						})}
+				</ul>
+ 			</div>
 		);
 	}
 });

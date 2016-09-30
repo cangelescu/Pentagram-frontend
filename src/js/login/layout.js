@@ -1,7 +1,7 @@
 var React = require ('react');
 var Router = require('react-router');
 var Link = Router.Link;
-var AjaxSupport = require('../ajax/ajax');
+var AjaxSupport = require('../common/ajax');
 
 var LoginPage = React.createClass({
 	
@@ -33,9 +33,14 @@ var LoginPage = React.createClass({
 		console.log(this.state);
 			
 		if(this.isValidStateForSubmit()){
+			debugger;
 			AjaxSupport.post({
-				url:'/login-user'
-				, data:this.state
+				url:'/login'
+				, contentType: 'application/json'
+				, data:JSON.stringify({
+					username:this.state.username
+					, password:this.state.password
+				})
 				, succes: function(){
 					console.log("request succes");
 				}
@@ -43,6 +48,7 @@ var LoginPage = React.createClass({
 					console.log("my request failed");
 				}
 			});
+			
 				
 			console.log("Form ready for submit");
 		}

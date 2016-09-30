@@ -1,7 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
-var AjaxSupport = require('../ajax/ajax');
+var AjaxSupport = require('../common/ajax');
 
 var RegisterPage = React.createClass({
 	
@@ -76,20 +76,20 @@ var RegisterPage = React.createClass({
 			
 			if(this.isValidStateForSubmit()){
 				AjaxSupport.post({
-					url:'/register-user'
-					, data:this.state
-					, succes: function(){
-						console.log("request succes");
-					}
-					, error :function(){
-						console.log("my request failed");
-					}
+				url:'/users'
+				, contentType: 'application/json'
+				,data:JSON.stringify({
+					username:this.state.username
+					, password:this.state.password
+					, email: this.state.email
+				})
+				,success:function(){
+					console.log('request success');
+				},
+				error:function(data){
+					console.log('my request failed');
+				}
 				});
-				
-				console.log("Form ready for submit");
-			}
-			else {
-				console.log("there bla bla");
 			}
 		}
 		
